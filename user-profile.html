@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Destined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: radial-gradient(ellipse at 80% 30%, #3d1b5f 0%, #260646 35%, transparent 70%),
+                radial-gradient(circle at top left, #260646 0%, transparent 35%),
+                linear-gradient(to right, #111225 0%, #0d0d2b 100%);
+            min-height: 100vh;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #c084fc;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(192, 132, 252, 0.5);
+            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(192, 132, 252, 0.3);
+            border: 1px solid rgba(192, 132, 252, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin: 0.25rem;
+        }
+
+        .edit-mode {
+            display: none;
+        }
+
+        .view-mode {
+            display: block;
+        }
+
+        .action-btn {
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-label {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .value-text {
+            font-size: 1.125rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gradient-bg min-h-screen pb-20">
+        <!-- Header -->
+        <div class="p-6">
+            <div class="flex justify-between items-center text-white">
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                    Meu Perfil
+                </h1>
+                <button id="edit-btn"
+                    class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                    Editar Perfil
+                </button>
+            </div>
+        </div>
+
+        <!-- Conteúdo do Perfil -->
+        <div class="px-6">
+            <div class="profile-card p-8 text-white">
+                <!-- Foto de Perfil -->
+                <div class="flex flex-col items-center mb-8">
+                    <div class="relative mb-4">
+                        <img id="profile-photo"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                            class="w-40 h-40 rounded-full object-cover border-4 border-purple-500 shadow-lg">
+                    </div>
+                    <div class="edit-mode">
+                        <input type="file" id="photo-input" accept="image/*" class="hidden">
+                        <button id="change-photo-btn"
+                            class="text-purple-300 text-lg hover:text-pink-300 transition-colors font-medium">
+                            Alterar foto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Informações do Usuário -->
+                <div class="space-y-6">
+                    <!-- Nome -->
+                    <div>
+                        <label class="section-label">Nome</label>
+                        <div class="view-mode">
+                            <p id="profile-name" class="value-text">Carregando...</p>
+                        </div>
+                        <div class="edit-mode">
+                            <input type="text" id="edit-name"
+                                class="input-field w-full px-4 py-3 rounded-xl focus:outline-none text-white"
+                                placeholder="Seu nome completo">
+                        </div>
+                    </div>
+
+                    <!-- Idade -->
+                    <div>
+                        <label class="section-label">Idade</label>
+                        <div class="view-mode">
+                            <p id="profile-age" class="value-text">Carregando...</p>
+                        </div>
+                        <div class="edit-mode">
+                            <input type="number" id="edit-age"
+                                class="input-field w-full px-4 py-3 rounded-xl focus:outline-none text-white"
+                                placeholder="Sua idade">
+                        </div>
+                    </div>
+
+                    <!-- Gênero -->
+                    <div>
+                        <label class="section-label">Gênero</label>
+                        <div class="view-mode">
+                            <p id="profile-gender" class="value-text">Carregando...</p>
+                        </div>
+                        <div class="edit-mode">
+                            <select id="edit-gender"
+                                class="input-field w-full px-4 py-3 rounded-xl focus:outline-none text-white">
+                                <option value="feminino">Feminino</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Interessado em -->
+                    <div>
+                        <label class="section-label">Interessado em</label>
+                        <div class="view-mode">
+                            <div id="profile-interested-in" class="flex flex-wrap">
+                                <span class="tag">Carregando...</span>
+                            </div>
+                        </div>
+                        <div class="edit-mode">
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interested-in" value="feminino" class="mr-3 w-5 h-5">
+                                    <span>Feminino</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interested-in" value="masculino" class="mr-3 w-5 h-5">
+                                    <span>Masculino</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interested-in" value="outro" class="mr-3 w-5 h-5">
+                                    <span>Outro</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biografia -->
+                    <div>
+                        <label class="section-label">Biografia</label>
+                        <div class="view-mode">
+                            <p id="profile-bio" class="value-text leading-relaxed">Carregando...</p>
+                        </div>
+                        <div class="edit-mode">
+                            <textarea id="edit-bio" rows="4"
+                                class="input-field w-full px-4 py-3 rounded-xl focus:outline-none text-white resize-none"
+                                placeholder="Conte um pouco sobre você..."></textarea>
+                            <div class="text-right text-sm text-gray-400 mt-2">
+                                <span id="char-count">0</span>/200 caracteres
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interesses -->
+                    <div>
+                        <label class="section-label">Meus Interesses</label>
+                        <div class="view-mode">
+                            <div id="profile-preferences" class="flex flex-wrap">
+                                <span class="tag">Carregando...</span>
+                            </div>
+                        </div>
+                        <div class="edit-mode">
+                            <div id="edit-preferences" class="grid grid-cols-2 gap-3">
+                                <!-- Preferências serão carregadas via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões de Edição -->
+                <div class="edit-mode mt-8 space-y-4">
+                    <button id="save-btn"
+                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                        Salvar Alterações
+                    </button>
+                    <button id="cancel-btn"
+                        class="w-full action-btn border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white py-4 rounded-xl font-semibold text-lg">
+                        Descartar Alterações
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ações da Conta -->
+            <div class="mt-8 space-y-4">
+                <button id="logout-btn"
+                    class="w-full action-btn border-pink-500 text-pink-400 hover:bg-pink-500 hover:text-white py-4 rounded-xl font-semibold text-lg">
+                    Sair da Conta
+                </button>
+                <button id="delete-account-btn"
+                    class="w-full action-btn border-purple-400 text-purple-300 hover:bg-purple-400 hover:text-white py-4 rounded-xl font-semibold text-lg">
+                    Apagar Conta
+                </button>
+            </div>
+        </div>
+
+        <!-- Navegação Inferior -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-[#0d0d2b] border-t border-white/10">
+            <div class="flex justify-around items-center p-3">
+                <a href="discovery.html" class="nav-item text-gray-400 p-3 rounded-lg">
+                    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <span class="text-xs mt-1 block">Descobrir</span>
+                </a>
+
+                <a href="matches.html" class="nav-item text-gray-400 p-3 rounded-lg">
+                    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    <span class="text-xs mt-1 block">Matches</span>
+                </a>
+
+                <a href="chat.html" class="nav-item text-gray-400 p-3 rounded-lg">
+                    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                        </path>
+                    </svg>
+                    <span class="text-xs mt-1 block">Chat</span>
+                </a>
+
+                <a href="user-profile.html" class="nav-item active text-white p-3 rounded-lg">
+                    <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-xs mt-1 block">Perfil</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Preferências disponíveis
+        const availablePreferences = [
+            'Música', 'Esportes', 'Viagens', 'Leitura', 'Cinema',
+            'Culinária', 'Tecnologia', 'Arte', 'Moda', 'Games',
+            'Natureza', 'Animais', 'Fotografia', 'Dança', 'Yoga'
+        ];
+
+        // Variável global para dados do usuário
+        let userData = null;
+
+        // Função para carregar dados do localStorage
+        function loadFromLocalStorage() {
+            console.log('🔍 Verificando localStorage...');
+
+            const storedData = localStorage.getItem('currentUser');
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            console.log('isLoggedIn:', isLoggedIn);
+            console.log('currentUser existe?', storedData ? 'SIM' : 'NÃO');
+
+            if (storedData) {
+                try {
+                    userData = JSON.parse(storedData);
+                    console.log('✅ Dados carregados:', userData);
+                    return true;
+                } catch (e) {
+                    console.error('❌ Erro ao parsear dados:', e);
+                    return false;
+                }
+            }
+
+            console.log('⚠️ Nenhum dado encontrado no localStorage');
+            return false;
+        }
+
+        // Função para carregar dados na interface
+        function displayUserData() {
+            if (!userData) {
+                console.log('❌ Nenhum dado para exibir');
+                return;
+            }
+
+            console.log('📱 Exibindo dados na interface...');
+
+            // Foto
+            const photoEl = document.getElementById('profile-photo');
+            if (userData.photo) {
+                photoEl.src = userData.photo;
+            }
+
+            // Nome
+            document.getElementById('profile-name').textContent = userData.name || 'Nome não definido';
+            document.getElementById('edit-name').value = userData.name || '';
+
+            // Idade
+            document.getElementById('profile-age').textContent = userData.age ? `${userData.age} anos` : 'Idade não definida';
+            document.getElementById('edit-age').value = userData.age || '';
+
+            // Gênero
+            const genderMap = {
+                'feminino': 'Feminino',
+                'masculino': 'Masculino',
+                'outro': 'Outro'
+            };
+            document.getElementById('profile-gender').textContent = genderMap[userData.gender] || 'Não definido';
+            document.getElementById('edit-gender').value = userData.gender || 'feminino';
+
+            // Biografia
+            document.getElementById('profile-bio').textContent = userData.bio || 'Nenhuma biografia adicionada ainda.';
+            document.getElementById('edit-bio').value = userData.bio || '';
+            document.getElementById('char-count').textContent = (userData.bio || '').length;
+
+            // Interessado em
+            const interestedContainer = document.getElementById('profile-interested-in');
+            interestedContainer.innerHTML = '';
+            if (userData.interestedIn && userData.interestedIn.length > 0) {
+                userData.interestedIn.forEach(gender => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = genderMap[gender] || gender;
+                    interestedContainer.appendChild(tag);
+                });
+            } else {
+                interestedContainer.innerHTML = '<span class="tag">Não definido</span>';
+            }
+
+            // Marcar checkboxes de interessado em
+            document.querySelectorAll('input[name="interested-in"]').forEach(checkbox => {
+                checkbox.checked = (userData.interestedIn || []).includes(checkbox.value);
+            });
+
+            // Preferências/Interesses
+            const prefsContainer = document.getElementById('profile-preferences');
+            prefsContainer.innerHTML = '';
+            if (userData.preferences && userData.preferences.length > 0) {
+                userData.preferences.forEach(pref => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = pref;
+                    prefsContainer.appendChild(tag);
+                });
+            } else {
+                prefsContainer.innerHTML = '<span class="tag">Nenhum interesse selecionado</span>';
+            }
+
+            // Carregar preferências editáveis
+            const editPrefsContainer = document.getElementById('edit-preferences');
+            editPrefsContainer.innerHTML = '';
+            availablePreferences.forEach(pref => {
+                const label = document.createElement('label');
+                label.className = 'flex items-center cursor-pointer';
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.name = 'preferences';
+                input.value = pref;
+                input.checked = (userData.preferences || []).includes(pref);
+                input.className = 'mr-3 w-5 h-5';
+
+                const span = document.createElement('span');
+                span.textContent = pref;
+
+                label.appendChild(input);
+                label.appendChild(span);
+                editPrefsContainer.appendChild(label);
+            });
+
+            console.log('✅ Interface atualizada com sucesso!');
+        }
+
+        // Alternar modo de edição
+        function toggleEditMode() {
+            const editBtn = document.getElementById('edit-btn');
+            const isEditing = editBtn.textContent.includes('Editar');
+
+            if (isEditing) {
+                editBtn.textContent = 'Visualizar Perfil';
+                document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
+            } else {
+                editBtn.textContent = 'Editar Perfil';
+                document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'none');
+            }
+        }
+
+        // Salvar alterações
+        function saveChanges() {
+            console.log('💾 Salvando alterações...');
+
+            // Coletar dados atualizados
+            userData.name = document.getElementById('edit-name').value;
+            userData.age = parseInt(document.getElementById('edit-age').value);
+            userData.gender = document.getElementById('edit-gender').value;
+            userData.bio = document.getElementById('edit-bio').value;
+
+            userData.interestedIn = Array.from(document.querySelectorAll('input[name="interested-in"]:checked'))
+                .map(cb => cb.value);
+
+            userData.preferences = Array.from(document.querySelectorAll('input[name="preferences"]:checked'))
+                .map(cb => cb.value);
+
+            // Validações
+            if (!userData.name || userData.name.trim() === '') {
+                alert('Por favor, informe seu nome!');
+                return;
+            }
+
+            if (!userData.age || userData.age < 18) {
+                alert('Idade mínima: 18 anos');
+                return;
+            }
+
+            if (userData.interestedIn.length === 0) {
+                alert('Selecione pelo menos um gênero de interesse!');
+                return;
+            }
+
+            // Salvar no localStorage
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            console.log('✅ Dados salvos:', userData);
+
+            // Atualizar interface
+            displayUserData();
+            toggleEditMode();
+            alert('Perfil atualizado com sucesso!');
+        }
+
+        // Inicialização quando a página carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🚀 Página carregada, inicializando...');
+
+            // Carregar dados do localStorage
+            const hasData = loadFromLocalStorage();
+
+            if (hasData) {
+                // Exibir dados na interface
+                displayUserData();
+            } else {
+                console.log('⚠️ Sem dados - mostrando mensagem padrão');
+                document.getElementById('profile-name').textContent = 'Perfil não configurado';
+                document.getElementById('profile-age').textContent = 'Complete seu perfil primeiro';
+                document.getElementById('profile-gender').textContent = '-';
+                document.getElementById('profile-bio').textContent = 'Você ainda não configurou seu perfil.';
+            }
+
+            // Event Listeners
+            document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
+            document.getElementById('save-btn').addEventListener('click', saveChanges);
+
+            document.getElementById('cancel-btn').addEventListener('click', function () {
+                loadFromLocalStorage();
+                displayUserData();
+                toggleEditMode();
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', function () {
+                if (confirm('Deseja realmente sair da conta?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'index.html';
+                }
+            });
+
+            document.getElementById('delete-account-btn').addEventListener('click', function () {
+                if (confirm('⚠️ ATENÇÃO: Esta ação é irreversível!\n\nDeseja realmente apagar sua conta permanentemente?')) {
+                    localStorage.clear();
+                    alert('Conta apagada com sucesso!');
+                    window.location.href = 'index.html';
+                }
+            });
+
+            document.getElementById('change-photo-btn').addEventListener('click', function () {
+                document.getElementById('photo-input').click();
+            });
+
+            document.getElementById('photo-input').addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        userData.photo = e.target.result;
+                        document.getElementById('profile-photo').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('edit-bio').addEventListener('input', function () {
+                document.getElementById('char-count').textContent = this.value.length;
+            });
+        });
+    </script>
+</body>
+
+</html>

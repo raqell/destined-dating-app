@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete seu Perfil - Destined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background:
+                radial-gradient(ellipse at 80% 30%, #3d1b5f 0%, #260646 35%, transparent 70%),
+                radial-gradient(circle at top left, #260646 0%, transparent 35%),
+                linear-gradient(to right, #111225 0%, #0d0d2b 100%);
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(192, 132, 252, 0.5);
+            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
+        }
+
+        /* Remove as setinhas do input number */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .avatar-upload {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload:hover {
+            border-color: rgba(192, 132, 252, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .preference-tag {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(192, 132, 252, 0.2);
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            margin: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preference-tag.selected {
+            background: rgba(192, 132, 252, 0.6);
+            border-color: rgba(192, 132, 252, 0.8);
+        }
+
+        .preference-tag:hover {
+            background: rgba(192, 132, 252, 0.4);
+        }
+
+        .gender-checkbox {
+            display: none;
+        }
+
+        .gender-label {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            margin: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-checkbox:checked+.gender-label {
+            background: rgba(192, 132, 252, 0.6);
+            border-color: rgba(192, 132, 252, 0.8);
+        }
+
+        .gender-label:hover {
+            background: rgba(192, 132, 252, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gradient-bg min-h-screen py-8">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <!-- Cabeçalho -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-white mb-2">Complete seu Perfil</h1>
+                <p class="text-gray-300">Conte-nos mais sobre você</p>
+            </div>
+
+            <!-- Formulário de Perfil -->
+            <form id="profileForm" class="glass-effect rounded-2xl p-6 text-white">
+                <!-- Upload de Foto -->
+                <div class="flex flex-col items-center mb-8">
+                    <div class="avatar-upload flex items-center justify-center mb-4" id="avatarUpload">
+                        <div class="text-center">
+                            <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span class="text-sm text-gray-400">Adicionar Foto</span>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                    </div>
+                    <div id="avatarPreview" class="hidden">
+                        <img id="previewImage" class="w-32 h-32 rounded-full object-cover border-2 border-purple-500">
+                    </div>
+                    <p class="text-sm text-gray-400 text-center">Clique para adicionar uma foto de perfil</p>
+                </div>
+
+                <!-- Informações Básicas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2" for="name">Nome</label>
+                        <input type="text" id="name"
+                            class="input-field w-full px-4 py-3 rounded-lg focus:outline-none text-white placeholder-gray-400"
+                            placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2" for="age">Idade</label>
+                        <input type="number" id="age"
+                            class="input-field w-full px-4 py-3 rounded-lg focus:outline-none text-white placeholder-gray-400"
+                            placeholder="Sua idade" required>
+                    </div>
+                </div>
+
+                <!-- Gênero -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-3">Seu Gênero</label>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="feminino" class="mr-2" required>
+                            <span>Feminino</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="masculino" class="mr-2">
+                            <span>Masculino</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="gender" value="outro" class="mr-2">
+                            <span>Outro</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Interessado em -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-3">Interessado em</label>
+                    <div class="flex flex-wrap">
+                        <input type="checkbox" id="interested-feminino" class="gender-checkbox" value="feminino">
+                        <label for="interested-feminino" class="gender-label">
+                            <span>Feminino</span>
+                        </label>
+
+                        <input type="checkbox" id="interested-masculino" class="gender-checkbox" value="masculino">
+                        <label for="interested-masculino" class="gender-label">
+                            <span>Masculino</span>
+                        </label>
+
+                        <input type="checkbox" id="interested-outro" class="gender-checkbox" value="outro">
+                        <label for="interested-outro" class="gender-label">
+                            <span>Outro</span>
+                        </label>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Selecione um ou mais gêneros</p>
+                </div>
+
+                <!-- Biografia -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" for="bio">Biografia</label>
+                    <textarea id="bio" rows="3"
+                        class="input-field w-full px-4 py-3 rounded-lg focus:outline-none text-white placeholder-gray-400 resize-none"
+                        placeholder="Conte um pouco sobre você..." maxlength="200"></textarea>
+                    <div class="text-right text-sm text-gray-400 mt-1">
+                        <span id="charCount">0</span>/200
+                    </div>
+                </div>
+
+                <!-- Preferências -->
+                <div class="mb-8">
+                    <label class="block text-sm font-medium mb-3">Seus Interesses</label>
+                    <div class="flex flex-wrap" id="preferencesContainer">
+                        <!-- As tags serão adicionadas via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Botão de Salvar -->
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                    Completar Perfil
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Preferências disponíveis
+        const availablePreferences = [
+            'Música', 'Esportes', 'Viagens', 'Leitura', 'Cinema',
+            'Culinária', 'Tecnologia', 'Arte', 'Moda', 'Games',
+            'Natureza', 'Animais', 'Fotografia', 'Dança', 'Yoga'
+        ];
+
+        // Elementos DOM
+        const photoInput = document.getElementById('photoInput');
+        const avatarUpload = document.getElementById('avatarUpload');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const previewImage = document.getElementById('previewImage');
+        const bioTextarea = document.getElementById('bio');
+        const charCount = document.getElementById('charCount');
+        const preferencesContainer = document.getElementById('preferencesContainer');
+        const form = document.getElementById('profileForm');
+
+        // Inicializar preferências
+        function initializePreferences() {
+            availablePreferences.forEach(pref => {
+                const tag = document.createElement('div');
+                tag.className = 'preference-tag';
+                tag.textContent = pref;
+                tag.addEventListener('click', () => {
+                    tag.classList.toggle('selected');
+                });
+                preferencesContainer.appendChild(tag);
+            });
+        }
+
+        // Upload de foto
+        photoInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    avatarUpload.classList.add('hidden');
+                    avatarPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Contador de caracteres da biografia
+        bioTextarea.addEventListener('input', function () {
+            charCount.textContent = this.value.length;
+        });
+
+        // Enviar formulário
+        // Enviar formulário - VERSÃO CORRIGIDA COM LOCALSTORAGE
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Coletar dados do formulário
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            const bio = bioTextarea.value;
+
+            // Coletar gêneros de interesse
+            const interestedInGenders = Array.from(document.querySelectorAll('.gender-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Coletar preferências selecionadas
+            const selectedPreferences = Array.from(preferencesContainer.querySelectorAll('.preference-tag.selected'))
+                .map(tag => tag.textContent);
+
+            // Validações básicas
+            if (!name || !age || !gender) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            if (age < 18) {
+                alert('O serviço está disponível apenas para usuários com 18 anos ou mais.');
+                return;
+            }
+
+            if (interestedInGenders.length === 0) {
+                alert('Selecione pelo menos um gênero de interesse!');
+                return;
+            }
+
+            if (selectedPreferences.length === 0) {
+                alert('Selecione pelo menos um interesse!');
+                return;
+            }
+
+            // =============================================
+            // 🔥 CÓDIGO CRÍTICO: SALVAR NO LOCALSTORAGE
+            // =============================================
+
+            // Salvar dados do usuário no localStorage
+            const userProfileData = {
+                name: name,
+                age: parseInt(age),
+                gender: gender,
+                interestedIn: interestedInGenders,
+                bio: bio,
+                preferences: selectedPreferences,
+                photo: previewImage.src || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                createdAt: new Date().toISOString()
+            };
+
+            console.log('💾 SALVANDO NO LOCALSTORAGE:', userProfileData);
+
+            // Salvar no localStorage
+            localStorage.setItem('currentUser', JSON.stringify(userProfileData));
+            localStorage.setItem('isLoggedIn', 'true');
+
+            // Verificar se salvou corretamente
+            const savedData = localStorage.getItem('currentUser');
+            console.log('✅ DADOS SALVOS:', savedData ? 'SIM' : 'NÃO');
+
+            alert('Perfil criado com sucesso! Redirecionando para o app...');
+
+            // Redirecionar para discovery.html
+            setTimeout(() => {
+                window.location.href = 'discovery.html';
+            }, 1500);
+        });
+        // Inicializar a tela
+        initializePreferences();
+    </script>
+</body>
+
+</html>
